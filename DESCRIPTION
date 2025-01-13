@@ -1,11 +1,17 @@
-Package: rehemgo
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Package: OxSR
+Type: Package
+Title: Soil iron oxides via diffuse reflectance
+Version: 0.1.0
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
+    c(
+    person("Frosi", "Gustavo", email = "gustavofrosi@hotmail.com", 
+    role =  c("aut", "cre"), comment = c(ORCID = "0000-0002-0324-636X")),
+    person("Barrón", "Vidal", email = "vbarron59@gmail.com", 
+    role = "ctb", comment = c(ORCID = "0000-0003-1484-1655")),
+    person("Inda, Alberto",
+    role = "ctb", comment = c(ORCID = "0000-0001-5252-0313")))
 Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: AGPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
