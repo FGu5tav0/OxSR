@@ -1,130 +1,198 @@
-
-
-#' Title
+#' Soil color by diffuse reflectance
+#' @description
+#' The function converts the visible soil spectrum to three-dimensional color systems, such as Munsell and RGB, using the CIE tristimulus values for the conversion. This allows for the standardized representation of colors and facilitates visual and comparative analysis.
+#' @usage
+#' soil_color(data = data,
+#'            name_wave = "wave",
+#'            tri_values = "std",
+#'            plot = FALSE)
 #'
-#' @param data
-#' @param name_wave
-#' @param tri_values
-#'
-#' @returns
-#' @export
-#'
+#' @param data A data.frame containing the wavelength and reflectance values.
+#' @param name_wave Character indicating the name of the column with the wavelength. It can be only the initial characters.
+#' @param tri_values Tristimulus Values, if `std` is used, xxx. Values from the `colorSpec` package can be used.
+#' @param plot Logical, if TRUE, the plot with the colors is generated, the default is FALSE
+#' @returns A `data.frame` with color values in `Munsell`, `HVC`, `RGB`, and `hexadecimal code`.
+#' @return an object of type `ggplot` if `plot = TRUE`.
 #' @examples
+#' # example code
+#' data(soil_refle)
+#'
+#' soil_color(soil_refle)
+#'
+#' # tristimulus values {colorSpec}
+#' soil_color(soil_refle, tri_values = "xyz1931.1nm", plot = TRUE)
+#' @export
+#' @importFrom ggplot2 ggplot aes facet_wrap geom_rect scale_fill_identity theme_minimal theme element_blank
+#' @importFrom stats na.omit
+#' @importFrom dplyr mutate across rename relocate
+#' @importFrom munsellinterpol XYZtoMunsell MunsellToRGB
+#' @importFrom grDevices rgb
+#' @importFrom rlang .data
+
 soil_color <- function(data = data,
                        name_wave = "wave",
-                       tri_values = "std"){
-
+                       tri_values = "std",
+                       plot = FALSE) {
   # Data input
-  if(missing(data)) {
+  if (missing(data)) {
     stop("The parameter `data` are required.")
   }
 
   # Data must be data.frame
-  if(!is.data.frame(data)) {
+  if (!is.data.frame(data)) {
     stop("The `data` parameter must be a `data.frame`.")
   }
   # NA data
-  if(any(is.na(data))) {
-    data <- data |> na.omit()
+  if (any(is.na(data))) {
+    data <- stats::na.omit(data)
   }
 
   # Wave columns
-  colunas <- grep(
+  wave_column <- grep(
     pattern = paste0("^", name_wave, ""),
     ignore.case = T,
     names(data), value = TRUE
   )
 
-  if(length(colunas) == 0){
-    stop("The `data` does not contain the ´wavelength´ column.")
+  if (length(wave_column) == 0) {
+    stop("The `data` does not contain the `wavelength` column.")
+  } else if(length(wave_column) > 1){
+    stop("The `data` contains more than one `wavelength` column.")
   }
 
-  if(length(colunas) > 1){
-    data <- data |>
-      dplyr::select(-colunas[-1]) |>
-      dplyr::rename("wavelength" = colunas[1])
-  }
+  data <- data |>
+    dplyr::rename("wavelength" = wave_column[1]) |>
+    dplyr::relocate(.data[["wavelength"]])
 
   if (tri_values == "std") {
 
-    df_2filter <- data |>
-      dplyr::filter(wavelength %in% tristimulusEX$wave) |>
-      dplyr::arrange(wavelength)
+    tristimulusEX <- tristimulusEX
 
-    result_list <- list()
+  } else if (tri_values == "xyz1931.1nm") {
 
-    for (i in 2:length(df_2filter)) {
+    tristimulusEX <- colorSpec::xyz1931.1nm |> as.data.frame()
 
-      x1 <- sum(df_2filter[[i]] * tristimulusEX$x) / sum(tristimulusEX$x)
-      y1 <- sum(df_2filter[[i]] * tristimulusEX$y) / sum(tristimulusEX$y)
-      z1 <- sum(df_2filter[[i]] * tristimulusEX$z) / sum(tristimulusEX$z)
+  } else if (tri_values == "xyz1931.5nm") {
 
-      result_list[[i - 1]] <- data.frame(samples = colnames(df_2filter)[i],x1,y1,z1)
-    }
+    tristimulusEX <- colorSpec::xyz1931.5nm |> as.data.frame()
 
-    base_ <- do.call(rbind, result_list)
+  } else if (tri_values == "xyz1964.1nm") {
 
+    tristimulusEX <- colorSpec::xyz1964.1nm |> as.data.frame()
 
+  } else if (tri_values == "xyz1964.5nm") {
 
-  } else if(tri_values == "user"){
+    tristimulusEX <- colorSpec::xyz1964.5nm |> as.data.frame()
 
+  } else {
+    stop(stop("The parameter `tri_values` are required."))
   }
+
+  df_2filter <- data |>
+    dplyr::filter(.data[["wavelength"]] %in% tristimulusEX$Wavelength) |>
+    dplyr::arrange(.data[["wavelength"]])
+
+  result_list <- list()
+
+  for (i in 2:length(df_2filter)) {
+    x1 <- sum(df_2filter[[i]] * tristimulusEX$x) / sum(tristimulusEX$x)
+    y1 <- sum(df_2filter[[i]] * tristimulusEX$y) / sum(tristimulusEX$y)
+    z1 <- sum(df_2filter[[i]] * tristimulusEX$z) / sum(tristimulusEX$z)
+
+    result_list[[i - 1]] <- data.frame(samples = colnames(df_2filter)[i], x1, y1, z1)
+  }
+
+  base_ <- do.call(rbind, result_list)
 
   # munsel
   dfmun <- list()
+
   for (i in 1:dim(base_)[1]) {
-    mun <- munsellinterpol::XYZtoMunsell(c(base_$x1[i] |> as.numeric(),
-                                           base_$y1[i] |> as.numeric(),
-                                           base_$z1[i] |> as.numeric()))
-    dfmun[[i]] <- data.frame(sample = base_$samples[i],mun)
+    mun <- munsellinterpol::XYZtoMunsell(c(
+      base_$x1[i],
+      base_$y1[i],
+      base_$z1[i]
+    ))
+    munsell <- row.names(mun)
+    dfmun[[i]] <- data.frame(sample = base_$samples[i], mun, munsell)
   }
 
   munsel_soil <- do.call(rbind, dfmun)
-  munsel_soil$munsell <- row.names(munsel_soil)
   row.names(munsel_soil) <- NULL
   munsel_soil <- munsel_soil |>
     dplyr::relocate(munsell, .after = sample)
 
-  rgb_munsellinte <- munsellinterpol::MunsellToRGB(MunsellSpec = munsel_soil$munsell)$RGB |> as.data.frame()
-  rgb_munsellinte$munsell <- row.names(rgb_munsellinte)
-  row.names(rgb_munsellinte) <- NULL
-  rgb_para_plot <- cbind(sample = base_$samples, rgb_munsellinte)
+  line_mun_na <- rowSums(is.na(munsel_soil))
 
-  hex <- c()
-  for (i in 1:length(row.names(rgb_para_plot))) {
-    hex_code <- rgb(rgb_para_plot$R[i],
-                    rgb_para_plot$G[i],
-                    rgb_para_plot$B[i],
-                    maxColorValue = 255)
-    hex[i] <- hex_code
-    # munsell::plot_hex(hex.colour = hex_code) |> print()
+  for (i in 1:length(line_mun_na)) {
+
+    if (line_mun_na[i] >= 1) {
+      cat(paste0(
+        "\033[32m", "The sample ",
+        "\033[31m", munsel_soil$sample[line_mun_na[i]], "\033[32m",
+        " contains ", "\033[31m", line_mun_na[i], "\033[32m",
+        " missing values and was removed!\n\n", "\033[0m",
+        sep = ""
+      ))
+      cat("---")
+      cat("\n")
+    }
   }
 
+  munsel_soil <- munsel_soil[line_mun_na == 0,]
 
-  rgb_para_plot$hex <- hex
+  rgb_munsellinte <- munsellinterpol::MunsellToRGB(MunsellSpec = munsel_soil$munsell)$RGB |>
+    as.data.frame()
+  row.names(rgb_munsellinte) <- NULL
+  data_end <- cbind(munsel_soil, rgb_munsellinte)
 
-  graph_hex <- data.frame(x = rep(1,length(hex)),
-                          y = rep(1,length(hex)),
-                          sample = base_$samples,
-                          color = hex)
+  hex <- c()
+  for (i in 1:length(row.names(data_end))) {
+    hex_code <- grDevices::rgb(data_end$R[i],
+                    data_end$G[i],
+                    data_end$B[i],
+      maxColorValue = 255
+    )
+    hex[i] <- hex_code
+  }
 
+  data_end$hex <- hex
 
-  p1 <- graph_hex |>
-    ggplot() +
-    aes(x,y) +
-    facet_wrap(~sample) +
-    geom_rect(mapping = aes(fill = color,
-                            xmin = 0, xmax = 1,
-                            ymin = 0, ymax = 1)) +
-    scale_fill_identity() +
-    theme_minimal() +
-    theme(axis.title = element_blank(),
-          axis.text = element_blank(),
-          axis.ticks = element_blank())
-  print(p1)
+  data_end <- data_end |>
+    dplyr::mutate(dplyr::across(c(.data[["H"]],.data[["V"]],
+                                  .data[["C"]],.data[["R"]],
+                                  .data[["G"]],.data[["B"]]), ~round(.,digits = 2)))
 
-  return(rgb_para_plot)
+  if (plot == TRUE) {
+
+    graph_hex <- data.frame(
+      x = rep(1, length(hex)),
+      y = rep(1, length(hex)),
+      sample = data_end$sample,
+      color = hex
+    )
+
+    p1 <- graph_hex |>
+      ggplot2::ggplot() +
+      ggplot2::aes(.data[["x"]], .data[["y"]]) +
+      ggplot2::facet_wrap(~sample) +
+      ggplot2::geom_rect(mapping = ggplot2::aes(
+        fill = .data[["color"]],
+        xmin = 0, xmax = 1,
+        ymin = 0, ymax = 1
+      )) +
+      ggplot2::scale_fill_identity() +
+      ggplot2::theme_minimal() +
+      ggplot2::theme(
+        axis.title = ggplot2::element_blank(),
+        axis.text = ggplot2::element_blank(),
+        axis.ticks = ggplot2::element_blank()
+      )
+    print(p1)
+
+  }
+
+  return(data_end)
 
 }
-
 

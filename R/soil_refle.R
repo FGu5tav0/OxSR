@@ -1,14 +1,18 @@
 #' Tabela do índice SMP
 #'
-#' Dados do valor do índice SMP e a quantidade de calcário necessária para elevar o pH em 5,5, 6 e 6,5
+#' @description
+#' A cleaned and organized diffuse reflectance database. The structure of the database includes the first column as the wavelength used in all samples, with the remaining columns representing the soil samples (Frosi et al., 2025).
 #'
-#' @format ## `soil_refle`
-#' Um data.frame com 4288 linha e 52 colunas:
+#' @format A data frame with 4241 rows and 24 columns:
 #' \describe{
-#'   \item{Wavelength_nm}{comprimento de onda}
-#'   \item{xn}{amostra de solo}
-#'
-#'   ...
+#'   \item{`wavelength_nm`}{Wavelength values in nanometers.}
+#'   \item{`a1`, `a2`, `a3`, `a4`, `a5`, `a6`, `a7`, `a8`, `a9`, `a10`, `a11`, `a12`, `a13`, `a14`, `a15`, `a16`, `a17`, `a18`, `a19`, `a20`, `a22`, `a24`, `a26`}{Reflectance percentage (%R) corresponding to each for each soil sample.}
 #' }
-#' @source "em busca"
+#'
+#' @references
+#' Frosi, G., Inda, A., & Barrón, V. (2025).
+#' Diffuse reflectance of soils from Brazil _Data set_. Zenodo.
+#' DOI: \url{https://doi.org/10.5281/zenodo.14879041}
+#'
+#' @source \url{https://doi.org/10.5281/zenodo.14879041}
 "soil_refle"

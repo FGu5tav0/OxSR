@@ -1,18 +1,16 @@
-
-
 # dados de refletância de exemplo -----------------------------------------
 
-# soil_refle <- readxl::read_excel(path = "1ª serie 001-026.xls") |>
+# soil_refle <- readxl::read_excel(path = "diffuse_reflectance_soil_GF.xls") |>
 #   janitor::clean_names()
-
-# usethis::use_data(soil_refle, internal = F)
-
+#
+# usethis::use_data(soil_refle, internal = F, overwrite = T)
+#
 # dados de cor de exemplo -------------------------------------------------
 
-
+#
 # tristimulusEX <-
 # data.frame(
-#         wave = c(770L,765L,760L,755L,750L,745L,740L,
+#         Wavelength = c(770L,765L,760L,755L,750L,745L,740L,
 #                  735L,730L,725L,720L,715L,710L,705L,700L,695L,690L,685L,
 #                  680L,675L,670L,665L,660L,655L,650L,645L,640L,635L,
 #                  630L,625L,620L,615L,610L,605L,600L,595L,590L,585L,580L,
@@ -65,6 +63,15 @@
 #                  10.31939105,10.33449254,9.968692535,8.974775531,7.313888672,
 #                  5.162822239,2.974244647,1.561125053,0.785033072,0.371629928,
 #                  0.201844836,0.093789823,0.044742326,0.019684482,0.010073293)
-# ) |> dplyr::arrange(wave)
+# ) |> dplyr::arrange(Wavelength)
 
-# usethis::use_data(tristimulusEX, internal = T)
+# usethis::use_data(tristimulusEX, internal = T, overwrite = T)
+
+
+# teste cary --------------------------------------------------------------
+#
+# data_cary <- readxl::read_excel(path = "teste_cary.xls") |>
+# janitor::clean_names()
+
+# names(data_cary)
+# usethis::use_data(data_cary, internal = F, overwrite = T)

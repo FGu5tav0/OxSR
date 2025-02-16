@@ -2,13 +2,36 @@
 % Please edit documentation in R/soil_color.R
 \name{soil_color}
 \alias{soil_color}
-\title{Title}
+\title{Soil color by diffuse reflectance}
 \usage{
-soil_color(data = data, name_wave = "wave", tri_values = "std")
+soil_color(data = data,
+           name_wave = "wave",
+           tri_values = "std",
+           plot = FALSE)
 }
 \arguments{
-\item{tri_values}{}
+\item{data}{A data.frame containing the wavelength and reflectance values.}
+
+\item{name_wave}{Character indicating the name of the column with the wavelength. It can be only the initial characters.}
+
+\item{tri_values}{Tristimulus Values, if \code{std} is used, xxx. Values from the \code{colorSpec} package can be used.}
+
+\item{plot}{Logical, if TRUE, the plot with the colors is generated, the default is FALSE}
+}
+\value{
+A \code{data.frame} with color values in \code{Munsell}, \code{HVC}, \code{RGB}, and \verb{hexadecimal code}.
+
+an object of type \code{ggplot} if \code{plot = TRUE}.
 }
 \description{
-Title
+The function converts the visible soil spectrum to three-dimensional color systems, such as Munsell and RGB, using the CIE tristimulus values for the conversion. This allows for the standardized representation of colors and facilitates visual and comparative analysis.
+}
+\examples{
+# example code
+data(soil_refle)
+
+soil_color(soil_refle)
+
+# tristimulus values {colorSpec}
+soil_color(soil_refle, tri_values = "xyz1931.1nm", plot = TRUE)
 }

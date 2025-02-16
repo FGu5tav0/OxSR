@@ -2,7 +2,7 @@
 % Please edit documentation in R/clean_sheet_carry.R
 \name{clean_sheet_cary}
 \alias{clean_sheet_cary}
-\title{Title}
+\title{Organize Cary data}
 \usage{
 clean_sheet_cary(
   data = data,
@@ -12,17 +12,29 @@ clean_sheet_cary(
 )
 }
 \arguments{
-\item{data}{A data.frame containing the wavelength and reflectance values obtained from the Cary 5000 UV-Vis-IR spectrophotometers. It should be obtained directly from the export of a CSV file.}
+\item{data}{A data.frame containing the wavelength and reflectance values. It should be obtained directly from the export of a CSV file.}
 
-\item{prefix}{Indicates the prefix defined for columns with no name.}
+\item{prefix}{Indicates the prefix for columns where there is no sample. It is usually predefined as \code{x} or \code{.}.}
 
-\item{name_wave}{Indicates the default name of the wavelength column.}
+\item{name_wave}{Indicates the name of the wavelength column. The default is 'wave'.}
 
 \item{range_wave}{Is the wavelength range used. The default is from 380 nm to 2500 nm.}
 }
 \value{
-The function returns a data.frame with the columns organized, removing duplicate columns and placing the wavelength column in the first position of the data.frame.
+The function returns an organized \code{data.frame}
 }
 \description{
-Title
+Cleans the raw data extracted from the Cary 5000 UV-Vis-IR spectrophotometer, ensuring an organized dataset for analysis. During the process, duplicate columns containing \code{wavelength} are removed to avoid redundancy. Samples with missing data are also eliminated, ensuring that only complete measurements are retained. Additionally, the columns are reordered based on the sample names, making it easier to interpret and manipulate the data. The \code{wavelength} column is placed as the first column, followed by the sample columns.
+}
+\examples{
+# example code
+library(OxSR)
+data(data_cary)
+
+clean_sheet_cary(data_cary, prefix = "x")
+
+# With pipe
+
+data_cary |> clean_sheet_cary(prefix = "x")
+
 }
