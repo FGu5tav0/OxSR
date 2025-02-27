@@ -28,11 +28,21 @@
 #' @importFrom munsellinterpol XYZtoMunsell MunsellToRGB
 #' @importFrom grDevices rgb
 #' @importFrom rlang .data
+#' @importFrom colorSpec xyz1964.5nm
 
 soil_color <- function(data = data,
                        name_wave = "wave",
                        tri_values = "std",
                        plot = FALSE) {
+
+  if (!requireNamespace("colorSpec", quietly = TRUE)) {
+    stop("Package 'colorSpec' is required but not installed. Please install it.")
+  }
+
+  if (!requireNamespace("munsellinterpol", quietly = TRUE)) {
+    stop("Package 'munsellinterpol' is required but not installed. Please install it.")
+  }
+
   # Data input
   if (missing(data)) {
     stop("The parameter `data` are required.")

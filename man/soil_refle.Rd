@@ -3,7 +3,7 @@
 \docType{data}
 \name{soil_refle}
 \alias{soil_refle}
-\title{Tabela do índice SMP}
+\title{Diffuse reflectance of soils from Brazil}
 \format{
 A data frame with 4241 rows and 24 columns:
 \describe{

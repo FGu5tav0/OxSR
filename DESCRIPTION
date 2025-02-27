@@ -1,32 +1,45 @@
-Package: OxSR
 Type: Package
+Package: OxSR
 Title: Soil Iron Oxides via Diffuse Reflectance
 Version: 1.0
-Authors@R:
-    c(
-    person("Frosi", "Gustavo", email = "gustavofrosi@hotmail.com", 
-    role =  c("aut", "cre"), comment = c(ORCID = "0000-0002-0324-636X")),
-    person("Barrón", "Vidal", email = "vbarron59@gmail.com", 
-    role = "ctb", comment = c(ORCID = "0000-0003-1484-1655")),
-    person("Inda, Alberto",
-    role = "ctb", comment = c(ORCID = "0000-0001-5252-0313")))
-Description: This package provides functions to calculate the ratio of iron oxides, hematite and goethite, in soil using the diffuse reflectance technique. The Kubelka-Munk theory, second derivative analysis, and spectral region amplitudes related to hematite and goethite content are used for quantification. Additionally, the package calculates soil color in the visible spectrum using Munsell and RGB color spaces, based on color theory.
+Authors@R: c(
+    person("Frosi", "Gustavo", , "gustavofrosi@hotmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-0324-636X")),
+    person("Barrón", "Vidal", , "vbarron59@gmail.com", role = "ctb",
+           comment = c(ORCID = "0000-0003-1484-1655")),
+    person("Inda, Alberto", role = "ctb",
+           comment = c(ORCID = "0000-0001-5252-0313"))
+  )
+Description: Provides functions to calculate the ratio of
+    iron oxides, hematite and goethite, in soil using the diffuse
+    reflectance technique. The Kubelka-Munk theory, second derivative
+    analysis, and spectral region amplitudes related to hematite and
+    goethite content are used for quantification. Additionally, the
+    package calculates soil color in the visible spectrum using Munsell
+    and RGB color spaces, based on color theory.
 License: AGPL (>= 3)
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
-Depends: 
-    R (>= 3.5)
-LazyData: true
 URL: https://github.com/FGu5tav0/OxSR
 BugReports: https://github.com/FGu5tav0/OxSR/issues
-Language: en-US
+Depends: 
+    R (>= 3.5)
 Imports: 
     colorSpec,
     dplyr,
     ggplot2,
+    grDevices,
     janitor,
     munsellinterpol,
-    rlang
+    rlang,
+    stats
 Suggests: 
-    spelling
+    knitr,
+    rmarkdown,
+    spelling,
+    testthat (>= 3.0.0)
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Config/testthat/edition: 3
+VignetteBuilder: knitr

@@ -1,4 +1,4 @@
-#' Tabela do índice SMP
+#' Diffuse reflectance of soils from Brazil
 #'
 #' @description
 #' A cleaned and organized diffuse reflectance database. The structure of the database includes the first column as the wavelength used in all samples, with the remaining columns representing the soil samples (Frosi et al., 2025).

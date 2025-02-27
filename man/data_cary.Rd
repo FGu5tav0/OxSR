@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_cary}
 \alias{data_cary}
-\title{Cary data clean}
+\title{Diffuse soil reflectance via Cary equipment}
 \format{
 A data frame with 5,417 rows and 52 columns:
 \describe{

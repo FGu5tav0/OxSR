@@ -5,7 +5,7 @@
 #'
 #' @param data A data.frame containing the input data, where the first column should be the wavelength and the remaining columns should contain the reflectance data of the sample.
 #' @param points_smoothing The number of points used for smoothing the data to reduce noise in the spectral readings. The default value is 0.3.
-#' @param hem_go_limits A list containing the detection range values for hematite (hem) and goethite (gt). The default is `list(hem = c(535, 585), gt = c(430, 460))`.
+#' @param hm_gt_limits A list containing the detection range values for hematite (hem) and goethite (gt). The default is `list(hem = c(535, 585), gt = c(430, 460))`.
 #' @param name_wave The name of the wavelength column in the data. By default, it is set to 'wave'.
 #' @param plot A logical value indicating whether to generate a plot of the results. If set to TRUE, a plot will be displayed; if FALSE, no plot will be shown.
 #' @param pv_tolerance A numeric vector with 4 elements, each corresponding to one of the limits for hematite (hm) and goethite (gt). This value specifies the tolerance for the point values in the calculation, helping to account for small variations in the data and controlling the precision of the calculation.
@@ -42,11 +42,11 @@
 
 relation_hm_gt <- function(data = data,
                            points_smoothing = 0.3,
-                           hem_go_limits = list(hem = c(535,585),
+                           hm_gt_limits = list(hm = c(535,585),
                                           gt = c(430,460)),
-                           pv_tolerance =  c(5,5,5,5),
+                           pv_tolerance =  c(1,1,1,1),
                            name_wave = "wave",
-                           plot = TRUE) {
+                           plot = FALSE) {
   # Data input
   if (missing(data)) {
     stop("The parameter `data` are required.")
@@ -156,8 +156,8 @@ relation_hm_gt <- function(data = data,
     # Rectangles of the minerals in the graph.
     rect_data <- data.frame(
       mineral = c("Hm", "Gt"),
-      xmin = c(hem_go_limits[[1]][1], hem_go_limits[[2]][1]),
-      xmax = c(hem_go_limits[[1]][2], hem_go_limits[[2]][2]),
+      xmin = c(hm_gt_limits[[1]][1], hm_gt_limits[[2]][1]),
+      xmax = c(hm_gt_limits[[1]][2], hm_gt_limits[[2]][2]),
       ymin = c(-Inf, -Inf),
       ymax = c(+Inf, +Inf)
     )

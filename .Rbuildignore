@@ -2,3 +2,8 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^\.github$
+^dev$
+^doc$
+^Meta$
+^OxSR\.Rproj$
+^cran-comments\.md$

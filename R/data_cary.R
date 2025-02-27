@@ -1,4 +1,4 @@
-#' Cary data clean
+#' Diffuse soil reflectance via Cary equipment
 #'
 #' @description
 #' A dataset containing diffuse reflectance measurements of soil samples from Brazil. The data were obtained using a Cary 5000 UV-Vis-NIR spectrophotometer, covering the spectral range from 2500 nm to 380 nm with a reading interval of 0.5 nm (Frosi et al., 2025).
