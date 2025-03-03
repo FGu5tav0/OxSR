@@ -9,10 +9,9 @@
 #'
 #' @param data A data.frame containing the wavelength and reflectance values.
 #' @param name_wave Character indicating the name of the column with the wavelength. It can be only the initial characters.
-#' @param tri_values Tristimulus Values, if `std` is used, xxx. Values from the `colorSpec` package can be used.
+#' @param tri_values Tristimulus Values. Values from the `colorSpec` package can be used.
 #' @param plot Logical, if TRUE, the plot with the colors is generated, the default is FALSE
 #' @returns A `data.frame` with color values in `Munsell`, `HVC`, `RGB`, and `hexadecimal code`.
-#' @return an object of type `ggplot` if `plot = TRUE`.
 #' @examples
 #' # example code
 #' data(soil_refle)
