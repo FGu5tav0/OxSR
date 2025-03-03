@@ -18,7 +18,7 @@ relation_hm_gt(
 
 \item{points_smoothing}{The number of points used for smoothing the data to reduce noise in the spectral readings. The default value is 0.3.}
 
-\item{hm_gt_limits}{A list containing the detection range values for hematite (hem) and goethite (gt). The default is \code{list(hem = c(535, 585), gt = c(430, 460))}.}
+\item{hm_gt_limits}{A list containing the detection range values for hematite (hm) and goethite (gt). The default is \code{list(hem = c(535, 585), gt = c(430, 460))}.}
 
 \item{pv_tolerance}{A numeric vector with 4 elements, each corresponding to one of the limits for hematite (hm) and goethite (gt). This value specifies the tolerance for the point values in the calculation, helping to account for small variations in the data and controlling the precision of the calculation.}
 
@@ -28,8 +28,6 @@ relation_hm_gt(
 }
 \value{
 a \code{data.frame} with each sample in the rows and columns containing the minimum, maximum, and amplitude for Hm and Gt, along with the Hm/Gt ratio.
-
-an object of type \code{ggplot} if \code{plot = TRUE}.
 }
 \description{
 Calculates the relationship between the iron oxides hematite and goethite in soil sample: \deqn{Hm/Gt = \frac{\text{hematite}}{\text{hematite} + \text{goethite}}}

@@ -6,8 +6,10 @@
 #' @param prefix Indicates the prefix for columns where there is no sample. It is usually predefined as `x` or `.`.
 #' @param name_wave Indicates the name of the wavelength column. The default is 'wave'.
 #' @param range_wave Is the wavelength range used. The default is from 380 nm to 2500 nm.
+#' @param nm_step The increment in nanometers between consecutive wavelength readings.
+#' This defines the resolution of the measurements. The default value is 0.5 nm.
 #'
-#' @returns The function returns an organized `data.frame`
+#' @returns Returns an organized `data.frame`
 #'
 #' @examples
 #' # example code
@@ -21,12 +23,13 @@
 #' data_cary |> clean_sheet_cary(prefix = "x")
 #'
 #' @export
-#' @importFrom janitor clean_names
-#'
+#
+
 clean_sheet_cary <- function(data = data,
                              prefix = NULL,
                              name_wave = "Wave",
-                             range_wave = c(380, 2500)) {
+                             range_wave = c(380, 2500),
+                             nm_step = 0.5) {
   # Data input
   if (missing(data)) {
     stop("The parameter `data` are required.")
@@ -78,25 +81,27 @@ clean_sheet_cary <- function(data = data,
   }
 
   for (i in 1:length(data)) {
-    data[[i]] <- as.numeric(data[[i]])
+    data[[i]] <- suppressWarnings(as.numeric(data[[i]]))
   }
 
+  tam <- length(seq(range_wave[2], range_wave[1], by = -nm_step))
+
+  data <- data[1:tam,]
+
   for (i in which(colunas_para_manter)) {
-    menos <- which(data[[i]] == range_wave[1])
-    mais <- which(data[[i]] == range_wave[2])
+    min_value <- min(as.numeric(data[[i]]), na.rm = T)
+    max_value <- max(as.numeric(data[[i]]), na.rm = T)
 
-    valor_menos <- data[menos, i] |> as.numeric()
-    valor_mais <- data[mais, i] |> as.numeric()
-
-    if (!is.na(valor_menos) && valor_menos == range_wave[1] & !is.na(valor_mais) && valor_mais == range_wave[2]) {
-      colunas_para_manter[i] <- F
+    if (min_value == range_wave[1] && max_value == range_wave[2]) {
+      colunas_para_manter[i] <- FALSE
 
       break
     }
+
   }
 
-  if (is.na(valor_menos) && valor_menos != range_wave[1] & is.na(valor_mais) && valor_mais != range_wave[2]) {
-    stop("The `data` does not have the specified limits!")
+  if (min_value != range_wave[1] | max_value != range_wave[2]) {
+    stop("The wavelength limits are different from the specified ones!")
   }
 
   df_unique <- data[, !colunas_para_manter]
@@ -110,17 +115,6 @@ clean_sheet_cary <- function(data = data,
       col_index
     )
   )]
-
-  menos <- which(df_unique[[1]] == range_wave[1])
-  mais <- which(df_unique[[1]] == range_wave[2])
-
-  if (menos == 1) {
-    df_unique <- df_unique[1:mais, ]
-  } else if (mais == 1) {
-    df_unique <- df_unique[1:menos, ]
-  } else {
-    stop("The parameter `data` are required.")
-  }
 
   sum_na <- colSums(is.na(df_unique))
 

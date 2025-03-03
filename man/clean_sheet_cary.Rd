@@ -8,7 +8,8 @@ clean_sheet_cary(
   data = data,
   prefix = NULL,
   name_wave = "Wave",
-  range_wave = c(380, 2500)
+  range_wave = c(380, 2500),
+  nm_step = 0.5
 )
 }
 \arguments{
@@ -19,9 +20,12 @@ clean_sheet_cary(
 \item{name_wave}{Indicates the name of the wavelength column. The default is 'wave'.}
 
 \item{range_wave}{Is the wavelength range used. The default is from 380 nm to 2500 nm.}
+
+\item{nm_step}{The increment in nanometers between consecutive wavelength readings.
+This defines the resolution of the measurements. The default value is 0.5 nm.}
 }
 \value{
-The function returns an organized \code{data.frame}
+Returns an organized \code{data.frame}
 }
 \description{
 Cleans the raw data extracted from the Cary 5000 UV-Vis-IR spectrophotometer, ensuring an organized dataset for analysis. During the process, duplicate columns containing \code{wavelength} are removed to avoid redundancy. Samples with missing data are also eliminated, ensuring that only complete measurements are retained. Additionally, the columns are reordered based on the sample names, making it easier to interpret and manipulate the data. The \code{wavelength} column is placed as the first column, followed by the sample columns.

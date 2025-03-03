@@ -5,13 +5,12 @@
 #'
 #' @param data A data.frame containing the input data, where the first column should be the wavelength and the remaining columns should contain the reflectance data of the sample.
 #' @param points_smoothing The number of points used for smoothing the data to reduce noise in the spectral readings. The default value is 0.3.
-#' @param hm_gt_limits A list containing the detection range values for hematite (hem) and goethite (gt). The default is `list(hem = c(535, 585), gt = c(430, 460))`.
+#' @param hm_gt_limits A list containing the detection range values for hematite (hm) and goethite (gt). The default is `list(hem = c(535, 585), gt = c(430, 460))`.
 #' @param name_wave The name of the wavelength column in the data. By default, it is set to 'wave'.
 #' @param plot A logical value indicating whether to generate a plot of the results. If set to TRUE, a plot will be displayed; if FALSE, no plot will be shown.
 #' @param pv_tolerance A numeric vector with 4 elements, each corresponding to one of the limits for hematite (hm) and goethite (gt). This value specifies the tolerance for the point values in the calculation, helping to account for small variations in the data and controlling the precision of the calculation.
 #'
 #' @return a `data.frame` with each sample in the rows and columns containing the minimum, maximum, and amplitude for Hm and Gt, along with the Hm/Gt ratio.
-#' @return an object of type `ggplot` if `plot = TRUE`.
 #' @references
 #' Scheinost, A. C., Chavernas, A., Barrón, V., & Torrent, J. (1998).
 #' Use and limitations of second-derivative diffuse reflectance spectroscopy in the visible to near-infrared range to identify and quantify Fe oxide minerals in soil. _Clays and Clay Minerals, 46(5), 528–536._
@@ -34,9 +33,6 @@
 #' relation_hm_gt(data_clean[,1:2], plot = TRUE)
 #'
 #' @export
-#' @importFrom ggplot2 ggplot aes ggtitle geom_line geom_hline annotate geom_point geom_text scale_x_continuous scale_y_continuous expansion labs scale_fill_manual coord_cartesian theme_bw theme element_text element_blank
-#' @importFrom stats na.omit smooth.spline predict
-#' @importFrom dplyr select rename mutate across starts_with
 #' @importFrom rlang .data
 #'
 
@@ -175,15 +171,14 @@ relation_hm_gt <- function(data = data,
         ggplot2::aes(x = .data[["x"]], y = .data[["y"]])
       ) +
         ggplot2::ggtitle(paste("Sample: ", col_select)) +
-        ggplot2::geom_line() +
         ggplot2::geom_hline(yintercept = 0, col = "gray70", alpha = .9) +
-        ggplot2::geom_line(linewidth = .6) +
-        ggplot2::annotate(
+        ggplot2::geom_line(linewidth = .6, na.rm = TRUE) +
+        ggplot2::annotate(na.rm = TRUE,
           geom = "rect", xmin = rect_data$xmin, xmax = rect_data$xmax,
           ymin = rect_data$ymin, ymax = rect_data$ymax,
           fill = "gold", alpha = 0.2, color = "transparent"
         ) +
-        ggplot2::geom_point(
+        ggplot2::geom_point(na.rm = TRUE,
           data = result_listdt[[i - 1]], mapping = ggplot2::aes(
             x = .data[["x"]],
             y = .data[["y"]],
@@ -193,7 +188,7 @@ relation_hm_gt <- function(data = data,
           pch = 21,
           size = 3
         ) +
-        ggplot2::geom_text(
+        ggplot2::geom_text(na.rm = TRUE,
           data = rect_data,
           ggplot2::aes(
             x = (.data[["xmin"]] + .data[["xmax"]]) / 2,
@@ -227,12 +222,15 @@ relation_hm_gt <- function(data = data,
           parse = TRUE,
           size = 5, vjust = 1.2
         ) +
+        ggplot2::guides(
+          fill  = ggplot2::guide_legend(position = "inside")
+        ) +
         ggplot2::labs(fill = NULL) +
         ggplot2::scale_fill_manual(values = "red") +
         ggplot2::coord_cartesian(clip = "off") +
         ggplot2::theme_bw() +
         ggplot2::theme(
-          legend.position = c(0.8, 0.85),
+          legend.position.inside = c(0.8, 0.85),
           legend.text = ggplot2::element_text(size = 14),
           legend.background = ggplot2::element_blank()
         )

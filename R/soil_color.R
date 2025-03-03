@@ -22,26 +22,12 @@
 #' # tristimulus values {colorSpec}
 #' soil_color(soil_refle, tri_values = "xyz1931.1nm", plot = TRUE)
 #' @export
-#' @importFrom ggplot2 ggplot aes facet_wrap geom_rect scale_fill_identity theme_minimal theme element_blank
-#' @importFrom stats na.omit
-#' @importFrom dplyr mutate across rename relocate
-#' @importFrom munsellinterpol XYZtoMunsell MunsellToRGB
-#' @importFrom grDevices rgb
 #' @importFrom rlang .data
-#' @importFrom colorSpec xyz1964.5nm
-
+#'
 soil_color <- function(data = data,
                        name_wave = "wave",
                        tri_values = "std",
                        plot = FALSE) {
-
-  if (!requireNamespace("colorSpec", quietly = TRUE)) {
-    stop("Package 'colorSpec' is required but not installed. Please install it.")
-  }
-
-  if (!requireNamespace("munsellinterpol", quietly = TRUE)) {
-    stop("Package 'munsellinterpol' is required but not installed. Please install it.")
-  }
 
   # Data input
   if (missing(data)) {
@@ -53,9 +39,9 @@ soil_color <- function(data = data,
     stop("The `data` parameter must be a `data.frame`.")
   }
   # NA data
-  if (any(is.na(data))) {
-    data <- stats::na.omit(data)
-  }
+  # if (any(is.na(data))) {
+  #   data <- stats::na.omit(data)
+  # }
 
   # Wave columns
   wave_column <- grep(
@@ -69,6 +55,28 @@ soil_color <- function(data = data,
   } else if(length(wave_column) > 1){
     stop("The `data` contains more than one `wavelength` column.")
   }
+
+  # limits data
+  data <- data[data$wavelength_nm >= 380 & data$wavelength_nm <= 770,]
+
+  col_mun_na <- colSums(is.na(data))
+
+  for (i in 1:length(col_mun_na)) {
+
+    if (col_mun_na[i] >= 1) {
+      cat(paste0(
+        "\033[32m", "The sample ",
+        "\033[31m", names(col_mun_na[i]), "\033[32m",
+        " contains ", "\033[31m", col_mun_na[i], "\033[32m",
+        " missing values and was removed!\n\n", "\033[0m",
+        sep = ""
+      ))
+      cat("---")
+      cat("\n")
+    }
+  }
+
+  data <- data[,col_mun_na == 0]
 
   data <- data |>
     dplyr::rename("wavelength" = wave_column[1]) |>
@@ -132,25 +140,6 @@ soil_color <- function(data = data,
   munsel_soil <- munsel_soil |>
     dplyr::relocate(munsell, .after = sample)
 
-  line_mun_na <- rowSums(is.na(munsel_soil))
-
-  for (i in 1:length(line_mun_na)) {
-
-    if (line_mun_na[i] >= 1) {
-      cat(paste0(
-        "\033[32m", "The sample ",
-        "\033[31m", munsel_soil$sample[line_mun_na[i]], "\033[32m",
-        " contains ", "\033[31m", line_mun_na[i], "\033[32m",
-        " missing values and was removed!\n\n", "\033[0m",
-        sep = ""
-      ))
-      cat("---")
-      cat("\n")
-    }
-  }
-
-  munsel_soil <- munsel_soil[line_mun_na == 0,]
-
   rgb_munsellinte <- munsellinterpol::MunsellToRGB(MunsellSpec = munsel_soil$munsell)$RGB |>
     as.data.frame()
   row.names(rgb_munsellinte) <- NULL
@@ -159,9 +148,9 @@ soil_color <- function(data = data,
   hex <- c()
   for (i in 1:length(row.names(data_end))) {
     hex_code <- grDevices::rgb(data_end$R[i],
-                    data_end$G[i],
-                    data_end$B[i],
-      maxColorValue = 255
+                               data_end$G[i],
+                               data_end$B[i],
+                               maxColorValue = 255
     )
     hex[i] <- hex_code
   }
