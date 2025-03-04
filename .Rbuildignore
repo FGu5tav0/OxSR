@@ -8,3 +8,4 @@
 ^OxSR\.Rproj$
 ^cran-comments\.md$
 ^README\.Rmd$
+^revdep$
