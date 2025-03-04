@@ -1,3 +1,3 @@
-# OxSR 1.0
+# OxSR 1.0.0
 
 * Initial CRAN submission.
