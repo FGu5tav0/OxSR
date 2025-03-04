@@ -1,7 +1,7 @@
 Type: Package
 Package: OxSR
 Title: Soil Iron Oxides via Diffuse Reflectance
-Version: 1.0
+Version: 1.0.0
 Authors@R: c(
     person("Frosi", "Gustavo", , "gustavofrosi@hotmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-0324-636X")),
@@ -10,7 +10,7 @@ Authors@R: c(
     person("Inda, Alberto", role = "ctb",
            comment = c(ORCID = "0000-0001-5252-0313")),
     person("Bastiani, Kayn", role = "ctb",
-           comment = c(ORCD = "0000-0003-2692-1695"))
+           comment = c(ORCID = "0000-0003-2692-1695"))
   )
 Description: Provides functions to calculate the ratio of iron oxides,
     hematite and goethite, in soil using the diffuse reflectance
