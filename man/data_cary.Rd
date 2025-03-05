@@ -11,9 +11,6 @@ A data frame with 5,417 rows and 52 columns:
 \item{\code{x2}, \code{x4}, \code{x6}, \code{x8}, \code{x10}, \code{x12}, \code{x14}, \code{x16}, \code{x18}, \code{x20}, \code{x22}, \code{x24}, \code{x26}, \code{x28}, \code{x30}, \code{x32}, \code{x34}, \code{x36}, \code{x38}, \code{x40}, \code{x42}, \code{x44}, \code{x46}, \code{x48}, \code{x50}}{Reflectance percentage (\%R) corresponding to each wavelength for the same sample. The "x" columns represent the reflectance values for the corresponding "a" sample columns.}
 }
 }
-\source{
-\url{https://doi.org/10.5281/zenodo.14879041}
-}
 \usage{
 data_cary
 }
