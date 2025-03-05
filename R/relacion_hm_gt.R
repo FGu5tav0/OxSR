@@ -13,12 +13,10 @@
 #' @return a `data.frame` with each sample in the rows and columns containing the minimum, maximum, and amplitude for Hm and Gt, along with the Hm/Gt ratio.
 #' @references
 #' Scheinost, A. C., Chavernas, A., Barrón, V., & Torrent, J. (1998).
-#' Use and limitations of second-derivative diffuse reflectance spectroscopy in the visible to near-infrared range to identify and quantify Fe oxide minerals in soil. _Clays and Clay Minerals, 46(5), 528–536._
-#' DOI: \url{https://doi.org/10.1346/CCMN.1998.0460506}
+#' Use and limitations of second-derivative diffuse reflectance spectroscopy in the visible to near-infrared range to identify and quantify Fe oxide minerals in soil. _Clays and Clay Minerals, 46(5), 528–536._ \doi{10.1346/CCMN.1998.0460506}
 #'
 #' Torrent, J., & Barron, V. (2008).
-#' Diffuse Reflectance Spectroscopy. _Methods of Soil Analysis, 5, 367–385._
-#' DOI: \url{https://doi.org/10.2136/sssabookser5.5.c13}
+#' Diffuse Reflectance Spectroscopy. _Methods of Soil Analysis, 5, 367–385._ \doi{10.2136/sssabookser5.5.c13}
 #'
 #' @examples
 #' # example code

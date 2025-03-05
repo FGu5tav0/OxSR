@@ -22,7 +22,6 @@ A cleaned and organized diffuse reflectance database. The structure of the datab
 }
 \references{
 Frosi, G., Inda, A., & Barrón, V. (2025).
-Diffuse reflectance of soils from Brazil \emph{Data set}. Zenodo.
-DOI: \url{https://doi.org/10.5281/zenodo.14879041}
+Diffuse reflectance of soils from Brazil \emph{Data set}. Zenodo \doi{10.5281/zenodo.14879041}
 }
 \keyword{datasets}

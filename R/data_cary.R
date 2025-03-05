@@ -11,8 +11,7 @@
 #'
 #' @references
 #' Frosi, G., Inda, A., & Barrón, V. (2025).
-#' Diffuse reflectance of soils from Brazil _Data set_. Zenodo.
-#' DOI: \url{https://doi.org/10.5281/zenodo.14879041}
+#' Diffuse reflectance of soils from Brazil _Data set_. Zenodo. \doi{10.5281/zenodo.14879041}
 #'
 #' @source \url{https://doi.org/10.5281/zenodo.14879041}
 "data_cary"
