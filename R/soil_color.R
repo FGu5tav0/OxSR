@@ -63,7 +63,7 @@ soil_color <- function(data = data,
   for (i in 1:length(col_mun_na)) {
 
     if (col_mun_na[i] >= 1) {
-      cat(paste0(
+      warning(paste0(
         "\033[32m", "The sample ",
         "\033[31m", names(col_mun_na[i]), "\033[32m",
         " contains ", "\033[31m", col_mun_na[i], "\033[32m",

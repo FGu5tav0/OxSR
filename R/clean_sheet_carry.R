@@ -124,7 +124,7 @@ clean_sheet_cary <- function(data = data,
   for (i in 1:length(sum_na)) {
 
     if (sum_na[i] >= 1) {
-      cat(paste0(
+      warning(paste0(
         "\033[32m", "The column ",
         "\033[31m", names(sum_na)[i], "\033[32m",
         " contains ", "\033[31m", sum_na[i], "\033[32m",
