@@ -131,8 +131,6 @@ clean_sheet_cary <- function(data = data,
         " missing values and was removed!\n\n", "\033[0m",
         sep = ""
       ))
-      cat("---")
-      cat("\n")
     }
   }
 
