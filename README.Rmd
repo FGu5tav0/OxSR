@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Overview  <a href="https://fgu5tav0.github.io/OxSR"><img src="man/figures/logo.png" align="right" height="139" alt="OxSR website" /></a>
+# Overview  <a href="https://fgu5tav0.github.io/OxSR/"><img src="man/figures/logo.png" align="right" height="139" alt="OxSR website" /></a>
 
 <!-- badges: start -->
 ![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/OxSR)&nbsp; 
